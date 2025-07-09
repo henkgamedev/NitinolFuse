@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project: Nitinol Fuse Saver</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Slate Gray, Muted Teal, Off-White) -->
+    <!-- Application Structure Plan: A thematic, single-page scrolling structure is used to present the project. Key sections include a hero banner, an interactive problem description, a detailed animated diagram of the solution, and visually distinct cards for merits, challenges, and YIP alignment. This structure is chosen to be more engaging and intuitive than a static report, allowing users to explore the project's narrative. The step-by-step animated diagram is the centerpiece, designed to make a complex technical concept easy to grasp, which is critical for audience engagement and understanding. -->
+    <!-- Visualization & Content Choices: Problem -> Goal: Establish a relatable pain point -> Viz: Icon-based flow diagram -> Interaction: On-scroll reveal animations -> Library: Tailwind CSS/JS. Solution Mechanism -> Goal: Clearly explain the core innovation -> Viz: Custom HTML/CSS animated diagram -> Interaction: User-controlled click-through steps -> Library: Vanilla JS. Merits/Challenges -> Goal: Present key takeaways in a scannable format -> Viz: Icon-based cards in a grid -> Interaction: Subtle hover effects -> Library: Tailwind CSS. YIP Alignment -> Goal: Explicitly connect project to program themes -> Viz: Hexagonal icons mimicking the source image -> Interaction: None, static visual reference. All visuals are custom-built with HTML/CSS and animated with JS, confirming no SVG or Mermaid JS is used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #1f2937;
+        }
+        .bg-custom-teal { background-color: #2dd4bf; }
+        .text-custom-teal { color: #14b8a6; }
+        .border-custom-teal { border-color: #2dd4bf; }
+        .bg-custom-dark { background-color: #111827; }
+        .text-custom-dark-blue { color: #1e3a8a; }
+
+        /* Animation for the "How it Works" diagram */
+        .nitinol-wire {
+            transition: all 0.5s ease-in-out;
+            height: 4px;
+            background-color: #9ca3af; /* Gray */
+            width: 100px;
+        }
+        .nitinol-contracted {
+            background-color: #ef4444; /* Red hot */
+            transform: scaleX(0.7);
+        }
+        .contact-point {
+            transition: transform 0.5s ease-in-out;
+            transform-origin: left center;
+        }
+        .contact-open {
+            transform: rotate(-30deg) translateX(5px);
+        }
+        .current-flow {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(52, 211, 153,0) 0%, rgba(52, 211, 153,1) 50%, rgba(52, 211, 153,0) 100%);
+            opacity: 0;
+            animation: flow 1.5s infinite linear;
+            transform: translateY(-50%);
+        }
+        .current-flow-active { opacity: 1; }
+        .current-flow-fault {
+            background: linear-gradient(90deg, rgba(239, 68, 68,0) 0%, rgba(239, 68, 68,1) 50%, rgba(239, 68, 68,0) 100%);
+            animation-duration: 0.3s;
+        }
+        .current-flow-off { opacity: 0; animation: none; }
+        
+        @keyframes flow {
+            0% { transform: translateX(-100%) translateY(-50%); }
+            100% { transform: translateX(100%) translateY(-50%); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="text-xl font-bold text-gray-800">Nitinol Fuse Saver</div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#problem" class="text-gray-600 hover:text-custom-teal transition">The Problem</a>
+                    <a href="#solution" class="text-gray-600 hover:text-custom-teal transition">Our Solution</a>
+                    <a href="#advantages" class="text-gray-600 hover:text-custom-teal transition">Advantages</a>
+                    <a href="#challenges" class="text-gray-600 hover:text-custom-teal transition">Challenges</a>
+                    <a href="#yip-alignment" class="text-gray-600 hover:text-custom-teal transition">YIP Alignment</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">Nitinol-Actuated Appliance Overcurrent Protector</h1>
+                <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                    An innovative, reusable safety device that uses smart materials to prevent blown fuses and protect your home from electrical faults.
+                </p>
+                <a href="#solution" class="mt-8 inline-block bg-teal-500 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-teal-600 transition transform hover:scale-105">See How It Works</a>
+            </div>
+        </section>
+
+        <!-- The Problem Section -->
+        <section id="problem" class="bg-white py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">The Everyday Inconvenience of a Blown Fuse</h2>
+                    <p class="mt-2 text-gray-600 max-w-2xl mx-auto">A single faulty appliance can cause a chain reaction, leading to power loss, disruption, and the hassle of replacement.</p>
+                </div>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-8">
+                    <div class="text-center p-6">
+                        <div class="text-6xl mb-4">🔌</div>
+                        <h3 class="font-bold text-lg">1. Appliance Short Circuit</h3>
+                        <p class="text-gray-500 text-sm">A fault occurs in an appliance, like a lamp or charger.</p>
+                    </div>
+                    <div class="text-5xl text-gray-300 transform rotate-90 md:rotate-0">→</div>
+                    <div class="text-center p-6">
+                        <div class="text-6xl mb-4">💥</div>
+                        <h3 class="font-bold text-lg">2. Main Fuse Blows</h3>
+                        <p class="text-gray-500 text-sm">The massive current surge melts the main fuse wire.</p>
+                    </div>
+                     <div class="text-5xl text-gray-300 transform rotate-90 md:rotate-0">→</div>
+                    <div class="text-center p-6">
+                        <div class="text-6xl mb-4">💡</div>
+                        <h3 class="font-bold text-lg">3. Power Outage</h3>
+                        <p class="text-gray-500 text-sm">The entire room or circuit loses power, causing disruption.</p>
+                    </div>
+                     <div class="text-5xl text-gray-300 transform rotate-90 md:rotate-0">→</div>
+                    <div class="text-center p-6">
+                        <div class="text-6xl mb-4">🛠️</div>
+                        <h3 class="font-bold text-lg">4. Manual Replacement</h3>
+                        <p class="text-gray-500 text-sm">Requires finding and replacing the fuse, a frustrating task.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Solution Section -->
+        <section id="solution" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Our Solution: The "Nitinol Fuse Saver"</h2>
+                    <p class="mt-2 text-gray-600 max-w-2xl mx-auto">An intelligent, reusable protector that acts at the appliance level to stop faults *before* they blow the main fuse.</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-2xl p-8 max-w-4xl mx-auto">
+                    <h3 class="font-bold text-2xl text-center mb-8">Interactive Demonstration: How It Works</h3>
+                    <div class="flex flex-col lg:flex-row items-center gap-8">
+                        <!-- Diagram -->
+                        <div class="w-full lg:w-1/2">
+                            <div class="border-2 border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center h-64">
+                                <!-- Circuit visualization -->
+                                <div class="flex items-center w-full max-w-xs">
+                                    <div class="font-mono text-sm">IN</div>
+                                    <div class="flex-grow mx-2 h-1 bg-gray-300 relative">
+                                         <div id="diagram-current" class="current-flow current-flow-active"></div>
+                                    </div>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-8 h-8 bg-gray-200 rounded-sm"></div>
+                                        <div id="contact-arm" class="contact-point">
+                                            <div class="w-8 h-8 bg-gray-200 rounded-sm"></div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow mx-2 h-1 bg-gray-300"></div>
+                                    <div class="font-mono text-sm">OUT</div>
+                                </div>
+                                <div class="mt-6 flex flex-col items-center">
+                                    <span class="text-sm font-medium text-gray-600 mb-2">Nitinol Actuator</span>
+                                    <div id="nitinol-actuator" class="nitinol-wire rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Explanation -->
+                        <div class="w-full lg:w-1/2">
+                            <div id="explanation-box" class="space-y-4">
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <h4 class="font-bold text-lg">Step <span id="step-number">1</span>: <span id="step-title">Normal Operation</span></h4>
+                                    <p id="step-description" class="text-gray-600 mt-1">Current flows normally through the closed contacts. The Nitinol wire remains in its cool, "expanded" state.</p>
+                                </div>
+                                <button id="next-step-btn" class="w-full bg-teal-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-teal-600 transition">
+                                    Simulate Short Circuit →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advantages Section -->
+        <section id="advantages" class="bg-white py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Key Advantages</h2>
+                    <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Our solution offers significant benefits over traditional protection methods.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Merit Card -->
+                    <div class="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition">
+                        <div class="text-4xl text-custom-teal mb-3">♻️</div>
+                        <h3 class="font-bold text-xl mb-2">Reusable & Convenient</h3>
+                        <p class="text-gray-600">Eliminates the need for manual fuse replacement. After a fault is cleared, the device can be easily reset.</p>
+                    </div>
+                    <!-- Merit Card -->
+                    <div class="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition">
+                        <div class="text-4xl text-custom-teal mb-3">🎯</div>
+                        <h3 class="font-bold text-xl mb-2">Localized Protection</h3>
+                        <p class="text-gray-600">Isolates the faulty appliance, preventing the entire room or house circuit from losing power.</p>
+                    </div>
+                    <!-- Merit Card -->
+                    <div class="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition">
+                        <div class="text-4xl text-custom-teal mb-3">🧠</div>
+                        <h3 class="font-bold text-xl mb-2">Innovative Smart Material</h3>
+                        <p class="text-gray-600">Showcases a practical, intelligent application of Nitinol's unique shape memory effect for a real-world problem.</p>
+                    </div>
+                    <!-- Merit Card -->
+                    <div class="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition">
+                        <div class="text-4xl text-custom-teal mb-3">⚡</div>
+                        <h3 class="font-bold text-xl mb-2">Rapid Response</h3>
+                        <p class="text-gray-600">Engineered for a fast reaction to overcurrents, potentially offering quicker protection for sensitive electronics.</p>
+                    </div>
+                    <!-- Merit Card -->
+                    <div class="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition">
+                        <div class="text-4xl text-custom-teal mb-3">🛡️</div>
+                        <h3 class="font-bold text-xl mb-2">Enhanced Safety</h3>
+                        <p class="text-gray-600">By quickly stopping fault currents, it reduces the risk of overheating, wire damage, and potential fire hazards.</p>
+                    </div>
+                    <!-- Merit Card -->
+                    <div class="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition">
+                        <div class="text-4xl text-custom-teal mb-3">🛠️</div>
+                        <h3 class="font-bold text-xl mb-2">Excellent for Prototyping</h3>
+                        <p class="text-gray-600">The core principles are highly demonstrable, making it an ideal project to showcase innovation and engineering skills.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Challenges Section -->
+        <section id="challenges" class="py-16 md:py-24">
+             <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Challenges & The Road Ahead</h2>
+                     <p class="mt-2 text-gray-600 max-w-2xl mx-auto">We recognize the engineering hurdles for a commercial product, which represent exciting areas for future development.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <!-- Challenge Card -->
+                    <div class="bg-white p-6 rounded-xl border border-gray-200">
+                        <h3 class="font-bold text-xl mb-2 text-custom-dark-blue">Precision & Calibration</h3>
+                        <p class="text-gray-600">Achieving consistent, certified trip thresholds requires precise manufacturing and calibration to account for ambient temperature and material tolerances.</p>
+                    </div>
+                    <!-- Challenge Card -->
+                    <div class="bg-white p-6 rounded-xl border border-gray-200">
+                        <h3 class="font-bold text-xl mb-2 text-custom-dark-blue">Arcing at Contact Break</h3>
+                        <p class="text-gray-600">Safely managing the electrical arc created when breaking high fault currents is a critical safety challenge for high-voltage applications.</p>
+                    </div>
+                    <!-- Challenge Card -->
+                    <div class="bg-white p-6 rounded-xl border border-gray-200">
+                        <h3 class="font-bold text-xl mb-2 text-custom-dark-blue">Long-Term Durability</h3>
+                        <p class="text-gray-600">The Nitinol element must be tested for fatigue over thousands of heating/cooling cycles to ensure long-term reliability.</p>
+                    </div>
+                     <!-- Challenge Card -->
+                    <div class="bg-white p-6 rounded-xl border border-gray-200">
+                        <h3 class="font-bold text-xl mb-2 text-custom-dark-blue">Commercialization Hurdles</h3>
+                        <p class="text-gray-600">Scaling for mass production involves overcoming material costs, manufacturing complexity, and rigorous safety certifications.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+         <!-- YIP Alignment Section -->
+        <section id="yip-alignment" class="bg-white py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Alignment with YIP Themes</h2>
+                    <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Our project directly addresses several key innovation areas outlined by YIP.</p>
+                </div>
+                <div class="flex flex-wrap justify-center gap-8">
+                    <div class="flex flex-col items-center text-center w-40">
+                         <div class="w-24 h-24 bg-teal-100 flex items-center justify-center rounded-full" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);">
+                            <span class="text-3xl">💡</span>
+                        </div>
+                        <h4 class="mt-4 font-semibold">Smart Solutions & Development</h4>
+                    </div>
+                    <div class="flex flex-col items-center text-center w-40">
+                         <div class="w-24 h-24 bg-blue-100 flex items-center justify-center rounded-full" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);">
+                            <span class="text-3xl">🛡️</span>
+                        </div>
+                        <h4 class="mt-4 font-semibold">Good Governance & Public Service</h4>
+                    </div>
+                    <div class="flex flex-col items-center text-center w-40">
+                         <div class="w-24 h-24 bg-purple-100 flex items-center justify-center rounded-full" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);">
+                            <span class="text-3xl">👨‍⚕️</span>
+                        </div>
+                        <h4 class="mt-4 font-semibold">Assistive Technologies</h4>
+                    </div>
+                     <div class="flex flex-col items-center text-center w-40">
+                         <div class="w-24 h-24 bg-yellow-100 flex items-center justify-center rounded-full" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);">
+                            <span class="text-3xl">👵</span>
+                        </div>
+                        <h4 class="mt-4 font-semibold">Problems of the Elderly</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-2xl font-bold">Nitinol Fuse Saver Project</h3>
+            <p class="mt-2 text-gray-400">An innovative step towards safer, more convenient home electrical systems.</p>
+            <p class="text-sm text-gray-500 mt-4">YIP Project Proposal</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Interactive Diagram Logic
+            const nextBtn = document.getElementById('next-step-btn');
+            const stepNumberEl = document.getElementById('step-number');
+            const stepTitleEl = document.getElementById('step-title');
+            const stepDescEl = document.getElementById('step-description');
+            
+            const nitinolActuator = document.getElementById('nitinol-actuator');
+            const contactArm = document.getElementById('contact-arm');
+            const diagramCurrent = document.getElementById('diagram-current');
+
+            let currentState = 0;
+            const states = [
+                { // State 0: Normal
+                    step: 1,
+                    title: "Normal Operation",
+                    desc: "Current flows normally through the closed contacts. The Nitinol wire remains in its cool, 'expanded' state.",
+                    btnText: "Simulate Short Circuit →"
+                },
+                { // State 1: Short Circuit
+                    step: 2,
+                    title: "Short Circuit Detected!",
+                    desc: "A massive current surge heats the Nitinol wire. It instantly contracts, pulling on the contact mechanism.",
+                    btnText: "Show Circuit Break →"
+                },
+                { // State 2: Circuit Broken
+                    step: 3,
+                    title: "Circuit Interrupted",
+                    desc: "The Nitinol's contraction pulls the contacts apart, breaking the circuit and stopping the fault. The main fuse is saved!",
+                    btnText: "Reset Device →"
+                },
+                { // State 3: Reset
+                    step: 4,
+                    title: "Device Reset",
+                    desc: "Once the fault is cleared and the Nitinol cools, the device is reset (manually or automatically), restoring power.",
+                    btnText: "Restart Simulation"
+                }
+            ];
+
+            function updateDiagram(state) {
+                 // Reset all classes first
+                nitinolActuator.classList.remove('nitinol-contracted');
+                contactArm.classList.remove('contact-open');
+                diagramCurrent.classList.remove('current-flow-fault', 'current-flow-off');
+                diagramCurrent.classList.add('current-flow-active');
+
+
+                switch (state) {
+                    case 0: // Normal
+                        // Default state, classes are reset
+                        break;
+                    case 1: // Short Circuit
+                        nitinolActuator.classList.add('nitinol-contracted');
+                        diagramCurrent.classList.add('current-flow-fault');
+                        break;
+                    case 2: // Circuit Broken
+                        nitinolActuator.classList.add('nitinol-contracted');
+                        contactArm.classList.add('contact-open');
+                        diagramCurrent.classList.remove('current-flow-active');
+                        diagramCurrent.classList.add('current-flow-off');
+                        break;
+                    case 3: // Reset
+                         // Same as state 0 visually
+                        break;
+                }
+            }
+            
+            function updateUI(stateIndex) {
+                const state = states[stateIndex];
+                stepNumberEl.textContent = state.step;
+                stepTitleEl.textContent = state.title;
+                stepDescEl.textContent = state.desc;
+                nextBtn.textContent = state.btnText;
+                updateDiagram(stateIndex);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                currentState = (currentState + 1) % states.length;
+                updateUI(currentState);
+            });
+
+            // Initial state
+            updateUI(0);
+        });
+    </script>
+</body>
+</html>
